@@ -59,7 +59,14 @@ file_put_contents($filePath, json_encode($linkData, JSON_PRETTY_PRINT));
 // Generate link to share
 $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
 $host = $_SERVER['HTTP_HOST'];
-$generatedLink = $protocol . $host . '/verify.php?id=' . $linkId;
+
+// Get the directory path of the application
+$currentDir = dirname($_SERVER['PHP_SELF']);
+// Normalize path to ensure it has a trailing slash
+$basePath = $currentDir === '/' ? '/' : $currentDir . '/';
+
+// Create the full URL with proper path to verify.php
+$generatedLink = $protocol . $host . $basePath . 'verify.php?id=' . $linkId;
 
 // Store in session to display on index page
 $_SESSION['generatedLink'] = $generatedLink;
